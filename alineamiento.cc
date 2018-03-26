@@ -62,7 +62,11 @@ int main()
 {
   init();
   string st, pt; cin >> st >> pt;
+  auto start = std::chrono::system_clock::now();
   dp(st.size(),pt.size(),st,pt);
+  auto end = std::chrono::system_clock::now();
+  double elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
+  printf("%.9f segundos",elapsed);
   printf("La matriz resultante es:\n\n");
   for(int i = 0 ; i <= st.size() ; ++i){
       for(int j = 0 ; j <= pt.size() ; ++j){
