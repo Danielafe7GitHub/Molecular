@@ -66,7 +66,13 @@ int main()
   dp(st.size(),pt.size(),st,pt);
   auto end = std::chrono::system_clock::now();
   double elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
-  printf("%.9f segundos",elapsed);
+  printf("El tiempo del Algoritmo Needleman and Wunsch%.9f segundos\n",elapsed);
+  start = std::chrono::system_clock::now();
+  trace(st.size(),pt.size(),st,pt,{"",""});
+  end = std::chrono::system_clock::now();
+  elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
+  printf("El tiempo del Algoritmo Needleman and Wunsch%.9f segundos\n",elapsed);
+
   printf("La matriz resultante es:\n\n");
   for(int i = 0 ; i <= st.size() ; ++i){
       for(int j = 0 ; j <= pt.size() ; ++j){
@@ -75,7 +81,8 @@ int main()
       }
       printf("\n\n");
     }
-  trace(st.size(),pt.size(),st,pt,{"",""});
+  
+  
   printf("Las posibles respuestas son:\n\n");
   for(int i = 0 ; i < rpta.size() ; ++i ){
     reverse(rpta[i].first.begin()  , rpta[i].first.end()  );
