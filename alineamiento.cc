@@ -66,12 +66,14 @@ int main()
   dp(st.size(),pt.size(),st,pt);
   auto end = std::chrono::system_clock::now();
   double elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
-  printf("El tiempo del Algoritmo Needleman and Wunsch%.9f segundos\n",elapsed);
+  printf("El tiempo del Algoritmo Needleman and Wunsch: %.9f segundos\n",elapsed);
   start = std::chrono::system_clock::now();
   trace(st.size(),pt.size(),st,pt,{"",""});
   end = std::chrono::system_clock::now();
   elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
-  printf("El tiempo del Algoritmo Needleman and Wunsch%.9f segundos\n",elapsed);
+  printf("El tiempo del Algoritmo de Trazado: %.9f segundos\n",elapsed);
+  printf("Cantidad de posibles alineamientos: %d\n",rpta.size());
+  printf("El Score es: %d\n", DP[st.size()][pt.size()]);
 
   printf("La matriz resultante es:\n\n");
   for(int i = 0 ; i <= st.size() ; ++i){
