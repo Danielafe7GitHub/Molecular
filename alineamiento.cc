@@ -57,6 +57,40 @@ void trace(int i , int j, string &st, string &pt, pair<string,string> dupla){
 }
 
 
+int giveK(string st)
+{
+  bool state = 0;
+  int k = 0 ;
+  for(int i = 0 ; i < st.size() ; ++i)
+    {
+      if(!state and st[i] == '-'){
+	state = 1;
+	k++;
+      }
+      if(state and st[i] != '-'){
+	state = 0;
+      }	
+    }
+  return k;
+}
+
+double penaltyFunction(int k){
+  if(k == 0)
+    return 0;
+  return 1 + 0.3 * k;
+}
+
+vector<double> gapPenalty(vector< pair< string, string > > & st)
+{
+  vector<double> rpta;
+  for(int i = 0 ; i < st.size() ; ++i)
+    {
+      int k = max(giveK(st[i].first),giveK(st[i].second));
+      rpta.push_back(penaltyFunction(k));
+    }
+  return rpta;
+}
+
 
 int main()
 {
@@ -92,4 +126,14 @@ int main()
     printf("%s\n",rpta[i].first.c_str());
     printf("%s\n\n",rpta[i].second.c_str());
   }
+
+  vector<double> rptaPenalty = gapPenalty(rpta);
+  double minElement = *(min_element(rptaPenalty.begin() , rptaPenalty.end() ));
+  printf("Las respuestas con mejor penalidad por gap son(con penalidad %f): \n",minElement);
+  for(int i = 0 ; i < rpta.size() ; ++i)
+    if(rptaPenalty[i] == minElement){
+          printf("%s\n",rpta[i].first.c_str());
+	  printf("%s\n\n",rpta[i].second.c_str());
+    }  
+  
 }
