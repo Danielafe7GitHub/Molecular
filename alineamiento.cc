@@ -77,7 +77,7 @@ int giveK(string st)
 double penaltyFunction(int k){
   if(k == 0)
     return 0;
-  return 1 + 0.3 * k;
+  return 5 + 3 * k;
 }
 
 vector<double> gapPenalty(vector< pair< string, string > > & st)
