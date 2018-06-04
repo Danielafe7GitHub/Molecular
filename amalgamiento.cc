@@ -196,20 +196,30 @@ int getMax(int n){
   return idx;
 }
 
-void disociativo(int n, int k){
+void disociativo(int n, int k, FUNC_PTR fnc){
   auto start = std::chrono::system_clock::now();
   getMinPerRow(n);
-  for(int cnt = 0 ; cnt < k ; ++cnt){
+  for(int cnt = 0 ; cnt < k-1 ; ++cnt){
     int idx = getMax(n);
+    vector<int> cola ;
+    cola.push_back(idx);
     mark[idx] = 1;
     for(int i = 0 ; i < n ; ++i ){
-      if(!mark[i] and i != idx){
-	if(disoc[i] - distancias[i][idx] >= 0){
+      bool flag=1;
+      int nn = distancias[i][cola[0]];
+      for(int j = 1 ; j < cola.size() ; ++j){
+	int nj = distancias[i][cola[j]];
+	nn = fnc(nj,nn);
+	if(j == i)
+	  flag=0;
+      }
+      if(!mark[i] and flag){
+	if(disoc[i] - nn >= 0){
 	  padre[i] = idx;
 	  mark[i] = 1;
 	}
       }
-    }    
+    }
   }
   auto end = std::chrono::system_clock::now();
   double elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
@@ -235,11 +245,14 @@ int main(){
   case 2:
     fnc_ptr= &prom;
   }
-  // disociativo(n,k);
-  amalgamiento(n,k,fnc_ptr);
+  disociativo(n,k,fnc_ptr);
+  //amalgamiento(n,k,fnc_ptr);
   //amalgamientoDSU(n,k,fnc_ptr);
   for(int i = 0 ; i < n; ++i){
-    cluster[padre[i]].push_back(i);
+    if(mark[i])
+      cluster[padre[i]].push_back(i);
+    else
+      cluster[1000].push_back(i);
   }
   int cnt = 0;
   for(auto it = cluster.begin() ; it != cluster.end() ; it++){

@@ -2,11 +2,13 @@
 
 #mkdir inputs
 
+val=832
 for i in 50 100 150 200
 do
 	for j in 0 1 2
 	do	
-		echo "832 ${i} ${j}" > "inputs/${i}${j}.in"
+	    newval=$(($val - i))
+	    echo "832 ${newval} ${j}" > "inputs/${i}${j}.in"
 		cat plantilla.txt >> "inputs/${i}${j}.in"
 		if [ $j -eq 0 ]
 		then
@@ -26,5 +28,7 @@ done
 
 for i in 50 100 150 200
 do
-	./disociativo.o < "inputs/${i}0.in" > "outputs/disociativo${i}.txt"
+    echo "832 ${i} 0" > "inputs/${i}xx.in"
+    cat plantilla.txt >> "inputs/${i}xx.in"
+    ./disociativo.o < "inputs/${i}xx.in" > "outputs/disociativo${i}.txt"
 done
