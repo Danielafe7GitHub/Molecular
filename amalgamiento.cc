@@ -195,28 +195,30 @@ int getMax(int n){
     }
   return idx;
 }
-
+vector<int> cola ;
 void disociativo(int n, int k, FUNC_PTR fnc){
   auto start = std::chrono::system_clock::now();
   getMinPerRow(n);
   for(int cnt = 0 ; cnt < k-1 ; ++cnt){
     int idx = getMax(n);
-    vector<int> cola ;
+    cola.clear();
+    cola.resize(0);
     cola.push_back(idx);
     mark[idx] = 1;
     for(int i = 0 ; i < n ; ++i ){
       bool flag=1;
-      int nn = distancias[i][cola[0]];
+      double nn = distancias[i][cola[0]];
       for(int j = 1 ; j < cola.size() ; ++j){
-	int nj = distancias[i][cola[j]];
+	double nj = distancias[i][cola[j]];
 	nn = fnc(nj,nn);
-	if(j == i)
+	if(cola[j] == i)
 	  flag=0;
       }
       if(!mark[i] and flag){
 	if(disoc[i] - nn >= 0){
 	  padre[i] = idx;
 	  mark[i] = 1;
+	  cola.push_back(i);
 	}
       }
     }

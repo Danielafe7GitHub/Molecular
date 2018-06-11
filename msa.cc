@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define MAXN 1000
+#define MAXN 10010
 #define INF -5000
 int DP[MAXN][MAXN];
 vector< pair< string, string > > rpta;
@@ -51,38 +51,6 @@ pair<string,string> justOne(int i , int j, string &st, string &pt){
     }
   // return {"",""};
 }
-
-
-// pair<string,string> dameUno(int i , int j, string &st, string &pt, pair<string,string> dupla){
-//   pair<string,string> mem = dupla;
-//   if(i <= 0 and j <= 0){
-//     return dupla;
-//     //fin
-//   } 
-//   if(i-1 >= 0 and j-1 >= 0)
-//     if(DP[i][j] == ( DP[i-1][j-1] + ( (st[i-1] == pt[j-1]) ? 1 : -1) ) ){
-//       dupla.first += st[i-1];
-//       dupla.second += pt[j-1];
-//       dameUno(i-1,j-1,st,pt,dupla);
-//       return dupla;
-//     }
-//   dupla = mem;
-//   if(i-1 >= 0)
-//     if(DP[i][j] == (DP[i-1][j] - 2)){
-//       dupla.first += st[i-1];
-//       dupla.second += "-";
-//       dameUno(i-1,j,st,pt,dupla);
-//       return dupla;
-//     }
-//   dupla = mem;
-//   if(j-1 >= 0)
-//     if(DP[i][j] == (DP[i][j-1] - 2)){
-//       dupla.first += "-";
-//       dupla.second += pt[j-1];
-//       dameUno(i,j-1,st,pt,dupla);
-//       return dupla;
-//     }      
-// }
 
 pair<string,string> myDupla;
 void trace(int i , int j, string &st, string &pt, pair<string,string> dupla){
@@ -167,7 +135,19 @@ int giveScore(vector<string> & msa){
   return scoreFinal;
 }
   
-
+void getMemory(vector<string> & ss){
+    int seqLength = sizeof(vector<string>);
+    int maxElement = -1;
+    for(int i = 0 ;i < ss.size() ; ++i){
+      seqLength += ss[i].size();
+      maxElement = max(maxElement,int(ss[i].length()));
+    }
+    int scoreMatrixLength =  sizeof(int) * maxElement * maxElement;
+    int totalLength = seqLength + scoreMatrixLength;
+    cout << "Las secuencias usaron: " << seqLength << " bytes\n";
+    cout << "Las matriz de Score uso: " << scoreMatrixLength << " bytes\n";;
+    cout << "En total se usaron: " << totalLength << " bytes\n";	    
+}
 
 int main()
 {
@@ -193,11 +173,6 @@ int main()
       idx = i;
     }
   }
-  auto end = std::chrono::system_clock::now();
-  double elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
-  printf("El tiempo para calcular las combinaciones por par de secuencias: %.9f segundos\n",elapsed);
-
-  start = std::chrono::system_clock::now();
   vector< pair<string,string> > vpp;
   for(int i = 0 ; i < n ; ++i){
     if(i == idx)    continue;
@@ -216,10 +191,11 @@ int main()
     for(int j = msa[i].length() ; j < maxSize ; ++j)
       msa[i] += '-';
   }
-  end = std::chrono::system_clock::now();
-  elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
+  auto end = std::chrono::system_clock::now();
+  double elapsed = std::chrono::duration_cast<std::chrono::duration<double> >(end - start).count();
   printf("El tiempo para alinear las secuencias: %.9f segundos\n",elapsed);
   cout << "El Score obtenido es: " << giveScore(msa) << "\n";
+  getMemory(msa);
   cout << "Las secuencias alineadas:\n";
   for(int i = 0 ;i < msa.size(); ++i){
     cout << msa[i] << "\n";
