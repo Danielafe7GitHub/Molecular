@@ -1,17 +1,21 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define MAXN 10010
+#define MAXN 1000
 #define INF -5000
-int DP[MAXN][MAXN];
 vector< pair< string, string > > rpta;
+vector< vector < int > > DP;
 
-void init()
+void initDP(int n , int m )
 {
-  for(int i = 0 ; i < MAXN ; ++i)
-    for(int j = 0 ; j < MAXN; ++j)
+  DP.clear();
+  DP.resize(n+1);
+  for(int i = 0 ; i <= n; ++i){
+    DP[i].resize(m+1);
+    for(int j = 0 ; j <=m; ++j){
       DP[i][j] = INF;
+    }
+  }
 }
-
 int maxThree(int a , int b , int c){
   return max(max(a,b),c);
 }
@@ -151,7 +155,6 @@ void getMemory(vector<string> & ss){
 
 int main()
 {
-  init();
   int n; cin >> n;
   vector<string> pat;
   int maxScore=-1,idx=0;
@@ -165,7 +168,7 @@ int main()
     int acumScore = 0;
     for(int j = 0 ; j < n ; ++j){
       if(j == i) continue;
-      init();
+      initDP(pat[i].size(),pat[j].size());
       acumScore += dp(pat[i].size(),pat[j].size(),pat[i],pat[j]);      
     }
     if(acumScore > maxScore){
@@ -176,7 +179,7 @@ int main()
   vector< pair<string,string> > vpp;
   for(int i = 0 ; i < n ; ++i){
     if(i == idx)    continue;
-    init();
+    initDP(pat[idx].size(),pat[i].size());
     dp(pat[idx].size(),pat[i].size(),pat[idx],pat[i]);
     vpp.push_back(justOne(pat[idx].size(),pat[i].size(),pat[idx],pat[i]));
   }
